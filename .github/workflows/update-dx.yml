@@ -33,7 +33,12 @@ jobs:
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
           git add package.json package-lock.json
-          git commit -m "Update outdated packages"
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          else
+            git commit -m "Update outdated packages"
+          fi
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
